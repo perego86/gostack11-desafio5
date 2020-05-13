@@ -19,14 +19,13 @@ class CreateTransactionService {
 
   public execute({title, value, type}:Request ): Transaction {
 
-    if (type === 'outcome' && value > this.transactionsRepository.getBalance().total) {
-      throw Error('The balance is insufficient');
-    }
-
-
     if (type !== 'income' && type !== 'outcome') {
       throw Error('This type of transaction is not valid');
     }
+
+    if (type === 'outcome' && value > this.transactionsRepository.getBalance().total) {
+      throw Error('The balance is insufficient');
+    }   
 
     const transaction = this.transactionsRepository.create({
       title, value, type}
